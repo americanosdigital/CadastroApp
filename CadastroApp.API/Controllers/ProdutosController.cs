@@ -1,5 +1,7 @@
 ﻿using CadastroApp.Domain.Interfaces.Services;
 using CadastroApp.Domain.Models.Dtos;
+using CadastroApp.Domain.Models.Entities;
+using CadastroApp.Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,39 +21,77 @@ namespace CadastroApp.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProdutoReadDto>>> GetAll()
         {
-            var produtos = await _produtoService.GetAllAsync();
-            return Ok(produtos);
+            try
+            {
+                var produtos = await _produtoService.GetAllAsync();
+                return Ok(produtos);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProdutoReadDto>> GetById(int id)
         {
-            var produto = await _produtoService.GetByIdAsync(id);
-            return Ok(produto);
+            try
+            {
+                var produto = await _produtoService.GetByIdAsync(id);
+                return Ok(produto);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<ProdutoReadDto>> Create(ProdutoCreateDto produtoCreateDto)
         {
-            var produto = await _produtoService.CreateAsync(produtoCreateDto);
-            return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
+            try
+            {
+                var produto = await _produtoService.CreateAsync(produtoCreateDto);
+                return CreatedAtAction(nameof(GetById), new { id = produto.Id }, produto);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, ProdutoUpdateDto produtoUpdateDto)
+        public async Task<IActionResult> Update(int id, [FromBody] ProdutoUpdateDto produtoUpdateDto)
         {
-            await _produtoService.UpdateAsync(id, produtoUpdateDto);
-            return NoContent();
+            try
+            {
+                await _produtoService.UpdateAsync(id, produtoUpdateDto);
+                return Ok(produtoUpdateDto);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _produtoService.DeleteAsync(id);
-            if (!result)
-                return NotFound();
+            try
+            {
+                var result = await _produtoService.DeleteAsync(id);
+                if (!result)
+                    return NotFound();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+
     }
 }

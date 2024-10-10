@@ -1,4 +1,5 @@
-﻿using CadastroApp.Domain.Interfaces.Services;
+﻿using CadastroApp.API.Services;
+using CadastroApp.Domain.Interfaces.Services;
 using CadastroApp.Domain.Models.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,32 +20,60 @@ namespace CadastroApp.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VendaReadDto>>> GetAll()
         {
-            var vendas = await _vendaService.GetAllAsync();
-            return Ok(vendas);
+            try
+            {
+                var vendas = await _vendaService.GetAllAsync();
+                return Ok(vendas);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<VendaReadDto>> GetById(int id)
         {
-            var venda = await _vendaService.GetByIdAsync(id);
-            return Ok(venda);
+            try
+            {
+                var venda = await _vendaService.GetByIdAsync(id);
+                return Ok(venda);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<VendaReadDto>> Create(VendaCreateDto vendaCreateDto)
         {
-            var venda = await _vendaService.CreateAsync(vendaCreateDto);
-            return CreatedAtAction(nameof(GetById), new { id = venda.Id }, venda);
+            try
+            {
+                var venda = await _vendaService.CreateAsync(vendaCreateDto);
+                return CreatedAtAction(nameof(GetById), new { id = venda.Id }, venda);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _vendaService.DeleteAsync(id);
-            if (!result)
-                return NotFound();
+            try
+            {
+                var result = await _vendaService.DeleteAsync(id);
+                if (!result)
+                    return NotFound();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // [HttpPut("{id}")]
