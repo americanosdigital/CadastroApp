@@ -69,9 +69,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
